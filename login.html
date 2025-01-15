@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Login to Your Account</h1>
+    </header>
+
+    <section id="login-form">
+        <form id="loginForm">
+            <div>
+                <label for="username">Username:</label>
+                <input type="text" id="username" name="username" required>
+            </div>
+            <div>
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+            </div>
+            <div>
+                <label for="password">Password:</label>
+                <input type="password" id="password" name="password" required>
+            </div>
+            <div>
+                <label for="grade">Grade:</label>
+                <input type="text" id="grade" name="grade">
+            </div>
+            <div>
+                <label for="section">Section:</label>
+                <input type="text" id="section" name="section">
+            </div>
+            <!-- Add a dropdown for role selection (President or Monitor) -->
+            <div>
+                <label for="role">Role:</label>
+                <select id="role" name="role" required>
+                    <option value="president">President</option>
+                    <option value="monitor">Monitor</option>
+                </select>
+            </div>
+
+            <button type="submit" class="button">Log In</button>
+        </form>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 Minecraft Server Hosting. All rights reserved.</p>
+    </footer>
+
+    <script>
+        // Function to toggle the enabled/disabled state of grade and section fields based on the selected role
+        document.getElementById('role').addEventListener('change', function() {
+            const gradeField = document.getElementById('grade');
+            const sectionField = document.getElementById('section');
+            const role = this.value;
+
+            if (role === 'monitor') {
+                gradeField.disabled = true; // Disable grade field
+                sectionField.disabled = true; // Disable section field
+            } else {
+                gradeField.disabled = false; // Enable grade field
+                sectionField.disabled = false; // Enable section field
+            }
+        });
+
+        // Listen for form submission
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Prevent form submission to allow JavaScript handling
+
+            // Get the username and email from the form
+            const username = document.getElementById('username').value;
+            const email = document.getElementById('email').value;
+
+            // Store the username and email in localStorage
+            localStorage.setItem('username', username);
+            localStorage.setItem('email', email);
+
+            // Get grade, section, and role
+            const grade = document.getElementById('grade').value;
+            const section = document.getElementById('section').value;
+            const role = document.getElementById('role').value;
+
+            if (role === 'monitor') {
+                // For Monitor role, no need for grade and section validation
+                localStorage.setItem('role', role);
+                window.location.href = 'user.html'; // Redirect to user page
+            } else {
+                // If President, ensure grade and section are filled
+                if (!grade || !section) {
+                    alert("Please enter both Grade and Section.");
+                    return;
+                }
+
+                // Save grade, section, and role in localStorage
+                localStorage.setItem('grade', grade);
+                localStorage.setItem('section', section);
+                localStorage.setItem('role', role);
+
+                // Redirect to plans page
+                window.location.href = 'monitor.html';
+            }
+        });
+    </script>
+</body>
+</html>
+
